@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Image Enhancer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- ── Sidebar ─────────────────────────────────────── -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="logo-icon">⚡</span>
+        <span>Enhancer</span>
+      </div>
+
+      <button class="new-thread-btn" onclick="clearResults()">＋ New Session</button>
+
+      <div class="history-section">
+        <h3>Recent Output</h3>
+        <ul class="history-list" id="recent-list"></ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="clear-btn" onclick="clearOutput()">🗑 Clear Output</button>
+      </div>
+    </aside>
+
+    <!-- ── Main ────────────────────────────────────────── -->
+    <main class="main-content">
+
+      <!-- Welcome -->
+      <div class="welcome-screen" id="welcome-screen">
+        <h1>AI Image Enhancer</h1>
+        <p>Select an image or folder, choose your enhancements, and process.</p>
+      </div>
+
+      <!-- Results grid -->
+      <div class="results-container" id="results-container">
+        <div class="results-grid" id="results-grid"></div>
+      </div>
+
+      <!-- ── Bottom Panel ─────────────────────────────── -->
+      <div class="input-wrapper">
+
+        <!-- Progress bar -->
+        <div class="progress-bar-wrap hidden" id="progress-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+          <span class="progress-label" id="progress-label">Processing...</span>
+        </div>
+
+        <!-- Controls panel -->
+        <div class="controls-panel">
+
+          <!-- Row 1: File inputs -->
+          <div class="file-row">
+            <label class="file-btn" for="single-upload">
+              🖼 Image
+              <input type="file" id="single-upload" accept="image/*" multiple>
+            </label>
+            <label class="file-btn" for="folder-upload">
+              📁 Folder
+              <input type="file" id="folder-upload" webkitdirectory accept="image/*">
+            </label>
+            <div class="file-chips" id="file-chips"></div>
+          </div>
+
+          <!-- Row 2: Enhancement toggles -->
+          <div class="options-row">
+            <span class="options-label">Enhancements</span>
+            <div class="toggle-group">
+              <label class="toggle-chip active" data-value="auto">
+                <input type="checkbox" value="auto" checked> 🤖 Auto
+              </label>
+              <label class="toggle-chip" data-value="lighting">
+                <input type="checkbox" value="lighting"> 💡 Lighting
+              </label>
+              <label class="toggle-chip" data-value="color">
+                <input type="checkbox" value="color"> 🎨 Color
+              </label>
+              <label class="toggle-chip" data-value="denoise">
+                <input type="checkbox" value="denoise"> 🔇 Denoise
+              </label>
+              <label class="toggle-chip" data-value="face">
+                <input type="checkbox" value="face"> 👤 Face
+              </label>
+              <label class="toggle-chip" data-value="sharpen">
+                <input type="checkbox" value="sharpen"> 🔪 Sharpen
+              </label>
+              <label class="toggle-chip" data-value="upscale">
+                <input type="checkbox" value="upscale"> 🔍 Upscale 2×
+              </label>
+            </div>
+          </div>
+
+          <!-- Row 3: Sliders -->
+          <div class="sliders-row" id="sliders-row">
+            <div class="slider-item" id="slider-lighting" style="display:none">
+              <label>💡 Lighting <span class="slider-val" id="val-lighting">3.0</span></label>
+              <input type="range" min="1" max="6" step="0.5" value="3.0"
+                     oninput="document.getElementById('val-lighting').textContent=this.value"
+                     id="range-lighting">
+            </div>
+            <div class="slider-item" id="slider-color" style="display:none">
+              <label>🎨 Saturation <span class="slider-val" id="val-color">1.25</span></label>
+              <input type="range" min="1.0" max="2.0" step="0.05" value="1.25"
+                     oninput="document.getElementById('val-color').textContent=parseFloat(this.value).toFixed(2)"
+                     id="range-color">
+            </div>
+            <div class="slider-item" id="slider-denoise" style="display:none">
+              <label>🔇 Denoise Level <span class="slider-val" id="val-denoise">15</span></label>
+              <input type="range" min="5" max="50" step="5" value="15"
+                     oninput="document.getElementById('val-denoise').textContent=this.value"
+                     id="range-denoise">
+            </div>
+            <div class="slider-item" id="slider-sharpen" style="display:none">
+              <label>🔪 Sharpen Strength <span class="slider-val" id="val-sharpen">1.5</span></label>
+              <input type="range" min="1.0" max="3.0" step="0.1" value="1.5"
+                     oninput="document.getElementById('val-sharpen').textContent=parseFloat(this.value).toFixed(1)"
+                     id="range-sharpen">
+            </div>
+            <div class="slider-item" id="slider-upscale" style="display:none">
+              <label>🔍 Upscale <span class="slider-val" id="val-upscale">2</span>×</label>
+              <input type="range" min="1" max="4" step="1" value="2"
+                     oninput="document.getElementById('val-upscale').textContent=this.value"
+                     id="range-upscale">
+            </div>
+          </div>
+
+          <!-- Row 4: Action buttons -->
+          <div class="action-row">
+            <button class="process-btn" id="process-btn" onclick="processFiles()">
+              ⚡ Process
+            </button>
+            <span class="status-text" id="status-text"></span>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
